@@ -1,7 +1,14 @@
+package models;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
 import java.math.BigDecimal;
 
+@JacksonXmlRootElement(localName = "pozycja")
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Currency {
 
     @JacksonXmlProperty(localName = "nazwa_waluty")
@@ -13,10 +20,13 @@ public class Currency {
     @JacksonXmlProperty(localName = "kod_waluty")
     private String code;
 
+    @JsonDeserialize(using = PolishBigDecimalDeserializer.class)
     @JacksonXmlProperty(localName = "kurs_sredni")
-    private String averagePrice;
+    private BigDecimal averagePrice;
 
-    public Currency(String code, int unit, String name, String averagePrice) {
+    public Currency() {}
+
+    public Currency(String code, int unit, String name, BigDecimal averagePrice) {
         this.code = code;
         this.unit = unit;
         this.name = name;
@@ -35,7 +45,7 @@ public class Currency {
         return code;
     }
 
-    public String  getAveragePrice() {
+    public BigDecimal  getAveragePrice() {
         return averagePrice;
     }
 }

@@ -1,6 +1,7 @@
 package data;
 
-import java.util.Currency;
+import models.Currency;
+
 import java.util.HashMap;
 
 public interface RateParser {
