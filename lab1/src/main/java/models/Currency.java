@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+import utils.PolishBigDecimalDeserializer;
 
 import java.math.BigDecimal;
 
@@ -26,10 +27,10 @@ public class Currency {
 
     public Currency() {}
 
-    public Currency(String code, int unit, String name, BigDecimal averagePrice) {
-        this.code = code;
-        this.unit = unit;
+    public Currency(String name,  int unit, String code, BigDecimal averagePrice) {
         this.name = name;
+        this.unit = unit;
+        this.code = code;
         this.averagePrice = averagePrice;
     }
 

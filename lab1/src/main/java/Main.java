@@ -1,5 +1,11 @@
+import data.CurrencyConverter;
 import data.DataProvider;
 import data.NbpXmlRateProvider;
+import models.Currency;
+import models.UserRequest;
+
+import java.math.BigDecimal;
+import java.util.HashMap;
 
 public class Main {
     public static void main(String[] args) {
@@ -9,8 +15,10 @@ public class Main {
 
         NbpXmlRateProvider nbpXmlRateProvider = new NbpXmlRateProvider();
 
-        nbpXmlRateProvider.parse(data);
+        HashMap<String, Currency> currencies = nbpXmlRateProvider.parse(data);
 
-        System.out.println(dataProvider.getData());
+        CurrencyConverter converter = new CurrencyConverter();
+
+        converter.convert(currencies, new UserRequest("THB", BigDecimal.valueOf(1000),"HKD"));
     }
 }

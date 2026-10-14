@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import models.Currency;
 
+import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.List;
 
@@ -14,6 +15,7 @@ public class NbpXmlRateProvider implements RateParser{
 
     public NbpXmlRateProvider() {
         rates = new HashMap<>();
+        rates.put("PLN", new Currency("Polski zl", 1, "PLN", BigDecimal.valueOf(1)));
     }
 
     public HashMap<String, Currency> parse(String data) {
@@ -34,6 +36,7 @@ public class NbpXmlRateProvider implements RateParser{
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
+
         return rates;
     }
 }
