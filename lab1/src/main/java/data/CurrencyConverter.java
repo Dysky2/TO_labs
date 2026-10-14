@@ -9,22 +9,22 @@ import java.util.HashMap;
 
 public class CurrencyConverter implements Converter {
     public BigDecimal convert(HashMap<String, Currency> map, UserRequest request) {
-        Currency pln = map.get("PLN");
 
+        Currency pln = map.get("PLN");
         Currency sourceCurrency = map.get(request.getSourceCode());
         Currency targetCurrency = map.get(request.getTargetCode());
 
-        BigDecimal amountInSourceCurrency = sourceCurrency.getAveragePrice().multiply(BigDecimal.valueOf(sourceCurrency.getUnit()));
+        //TODO sprawdzic czy istineije w bazie map
 
-        System.out.println("Source " + amountInSourceCurrency);
+        System.out.println("System convert " + request.getSourceCode() + " into " + request.getTargetCode() + " in amount of " + request.getAmount());
+        System.out.println(request.getAmount() + " " + sourceCurrency.getCode() + " -> ? " + request.getTargetCode());
+
+
+        BigDecimal amountInSourceCurrency = sourceCurrency.getAveragePrice().multiply(BigDecimal.valueOf(sourceCurrency.getUnit()));
 
         BigDecimal valueInPln = amountInSourceCurrency.multiply(request.getAmount());
 
-        System.out.println("PLN: " + valueInPln);
-
         BigDecimal valueInTargetCurrency = valueInPln.divide(targetCurrency.getAveragePrice().multiply(BigDecimal.valueOf(targetCurrency.getUnit())), 4, RoundingMode.HALF_EVEN);
-
-        System.out.println("CAD: " + valueInTargetCurrency);
 
         return valueInPln;
     }

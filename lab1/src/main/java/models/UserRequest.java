@@ -7,6 +7,8 @@ public class UserRequest {
     private BigDecimal amount;
     private String targetCode;
 
+    public UserRequest() {}
+
     public UserRequest(String sourceCode, BigDecimal amount, String targetCode) {
         this.sourceCode = sourceCode;
         this.amount = amount;

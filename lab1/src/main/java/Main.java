@@ -3,6 +3,7 @@ import data.DataProvider;
 import data.NbpXmlRateProvider;
 import models.Currency;
 import models.UserRequest;
+import view.UserInputReader;
 
 import java.math.BigDecimal;
 import java.util.HashMap;
@@ -19,6 +20,10 @@ public class Main {
 
         CurrencyConverter converter = new CurrencyConverter();
 
-        converter.convert(currencies, new UserRequest("THB", BigDecimal.valueOf(1000),"HKD"));
+        UserInputReader userInputReader = new UserInputReader();
+
+        UserRequest request = userInputReader.readUserInput();
+
+        converter.convert(currencies, request);
     }
 }
