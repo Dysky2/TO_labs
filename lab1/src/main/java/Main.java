@@ -3,6 +3,7 @@ import data.DataProvider;
 import data.NbpXmlRateProvider;
 import models.Currency;
 import models.UserRequest;
+import view.ResultPrinter;
 import view.UserInputReader;
 
 import java.math.BigDecimal;
@@ -24,6 +25,10 @@ public class Main {
 
         UserRequest request = userInputReader.readUserInput();
 
-        converter.convert(currencies, request);
+        BigDecimal result = converter.convert(currencies, request);
+
+        ResultPrinter resultPresenter = new ResultPrinter();
+
+        resultPresenter.showResult(result, request);
     }
 }

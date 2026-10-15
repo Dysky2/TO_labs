@@ -11,21 +11,25 @@ public class CurrencyConverter implements Converter {
     public BigDecimal convert(HashMap<String, Currency> map, UserRequest request) {
 
         Currency pln = map.get("PLN");
-        Currency sourceCurrency = map.get(request.getSourceCode());
-        Currency targetCurrency = map.get(request.getTargetCode());
+        Currency sourceCurrency;
+        Currency targetCurrency;
 
-        //TODO sprawdzic czy istineije w bazie map
+        if(map.containsKey(request.getSourceCode())) {
+            sourceCurrency = map.get(request.getSourceCode());
+        } else {
+            throw new RuntimeException("This code does not exist");
+        }
 
-        System.out.println("System convert " + request.getSourceCode() + " into " + request.getTargetCode() + " in amount of " + request.getAmount());
-        System.out.println(request.getAmount() + " " + sourceCurrency.getCode() + " -> ? " + request.getTargetCode());
-
+        if(!map.containsKey(request.getTargetCode())) {
+            targetCurrency = map.get(request.getTargetCode());
+        } else {
+            throw new RuntimeException("This code does not exist");
+        }
 
         BigDecimal amountInSourceCurrency = sourceCurrency.getAveragePrice().multiply(BigDecimal.valueOf(sourceCurrency.getUnit()));
 
         BigDecimal valueInPln = amountInSourceCurrency.multiply(request.getAmount());
 
-        BigDecimal valueInTargetCurrency = valueInPln.divide(targetCurrency.getAveragePrice().multiply(BigDecimal.valueOf(targetCurrency.getUnit())), 4, RoundingMode.HALF_EVEN);
-
-        return valueInPln;
+        return valueInPln.divide(targetCurrency.getAveragePrice().multiply(BigDecimal.valueOf(targetCurrency.getUnit())), 4, RoundingMode.HALF_EVEN);
     }
 }
