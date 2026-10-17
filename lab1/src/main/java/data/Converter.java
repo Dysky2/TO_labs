@@ -5,7 +5,8 @@ import models.UserRequest;
 
 import java.math.BigDecimal;
 import java.util.HashMap;
+import java.util.Map;
 
 public interface Converter {
-    public BigDecimal convert(HashMap<String, Currency> map, UserRequest request);
+    public BigDecimal convert(Map<String, Currency> map, UserRequest request);
 }

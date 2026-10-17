@@ -17,9 +17,9 @@ public class UserInputReader implements InputReader{
         String targetCode = scanner.next();
 
         System.out.println("Podaj ilosc");
-        int amount = scanner.nextInt();
+        BigDecimal amount = scanner.nextBigDecimal();
 
-        return new UserRequest(sourceCode, BigDecimal.valueOf(amount), targetCode);
+        return new UserRequest(sourceCode.toUpperCase(), amount, targetCode.toUpperCase());
     }
 
 }

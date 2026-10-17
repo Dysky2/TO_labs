@@ -1,34 +1,39 @@
-import data.CurrencyConverter;
-import data.DataProvider;
-import data.NbpXmlRateProvider;
+import data.*;
 import models.Currency;
 import models.UserRequest;
+import view.InputReader;
+import view.ResultPresenter;
 import view.ResultPrinter;
 import view.UserInputReader;
 
 import java.math.BigDecimal;
 import java.util.HashMap;
+import java.util.Map;
 
 public class Main {
     public static void main(String[] args) {
-        DataProvider dataProvider = new DataProvider();
+        String URL = "https://static.nbp.pl/dane/kursy/xml/lastA.xml";
 
+        RateProvider dataProvider = new DataProvider(URL);
         String data = dataProvider.getData();
 
-        NbpXmlRateProvider nbpXmlRateProvider = new NbpXmlRateProvider();
+        RateParser nbpXmlRateProvider = new NbpXmlRateProvider();
+        Map<String, Currency> currencies = nbpXmlRateProvider.parse(data);
 
-        HashMap<String, Currency> currencies = nbpXmlRateProvider.parse(data);
-
-        CurrencyConverter converter = new CurrencyConverter();
-
-        UserInputReader userInputReader = new UserInputReader();
-
+        InputReader userInputReader = new UserInputReader();
         UserRequest request = userInputReader.readUserInput();
 
-        BigDecimal result = converter.convert(currencies, request);
+        Converter converter;
+        BigDecimal result;
+        try {
+            converter = new CurrencyConverter();
+            result = converter.convert(currencies, request);
+        } catch (IllegalArgumentException e) {
+            System.out.println(e.getMessage());
+            return;
+        }
 
-        ResultPrinter resultPresenter = new ResultPrinter();
-
+        ResultPresenter resultPresenter = new ResultPrinter();
         resultPresenter.showResult(result, request);
     }
 }

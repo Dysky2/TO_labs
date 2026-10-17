@@ -8,17 +8,14 @@ import models.Currency;
 import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-public class NbpXmlRateProvider implements RateParser{
+public class NbpXmlRateProvider implements RateParser {
 
-    HashMap<String, Currency> rates;
+    public Map<String, Currency> parse(String data) {
 
-    public NbpXmlRateProvider() {
-        rates = new HashMap<>();
+        HashMap<String, Currency> rates = new HashMap<>();
         rates.put("PLN", new Currency("Polski zl", 1, "PLN", BigDecimal.valueOf(1)));
-    }
-
-    public HashMap<String, Currency> parse(String data) {
 
         XmlMapper mapper =  XmlMapper.builder().defaultUseWrapper(false).build();
 

@@ -3,7 +3,8 @@ package data;
 import models.Currency;
 
 import java.util.HashMap;
+import java.util.Map;
 
 public interface RateParser {
-    public HashMap<String, Currency> parse(String data);
+    public Map<String, Currency> parse(String data);
 }
