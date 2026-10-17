@@ -7,7 +7,6 @@ import view.ResultPrinter;
 import view.UserInputReader;
 
 import java.math.BigDecimal;
-import java.util.HashMap;
 import java.util.Map;
 
 public class Main {
@@ -17,23 +16,24 @@ public class Main {
         RateProvider dataProvider = new DataProvider(URL);
         String data = dataProvider.getData();
 
-        RateParser nbpXmlRateProvider = new NbpXmlRateProvider();
-        Map<String, Currency> currencies = nbpXmlRateProvider.parse(data);
+        RateParser nbpXmlRateParser = new NbpXmlRateParser();
+        Map<String, Currency> currencies = nbpXmlRateParser.parse(data);
 
         InputReader userInputReader = new UserInputReader();
-        UserRequest request = userInputReader.readUserInput();
-
-        Converter converter;
-        BigDecimal result;
-        try {
-            converter = new CurrencyConverter();
-            result = converter.convert(currencies, request);
-        } catch (IllegalArgumentException e) {
-            System.out.println(e.getMessage());
-            return;
-        }
-
+        Converter converter = new CurrencyConverter();
         ResultPresenter resultPresenter = new ResultPrinter();
-        resultPresenter.showResult(result, request);
+
+        while (true) {
+            try {
+                UserRequest request = userInputReader.readUserInput();
+
+                BigDecimal result = converter.convert(currencies, request);
+
+                resultPresenter.showResult(result, request);
+                break;
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
+        }
     }
 }

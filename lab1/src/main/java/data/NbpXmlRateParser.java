@@ -10,7 +10,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class NbpXmlRateProvider implements RateParser {
+public class NbpXmlRateParser implements RateParser {
 
     public Map<String, Currency> parse(String data) {
 
