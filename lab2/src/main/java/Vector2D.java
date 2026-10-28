@@ -1,4 +1,4 @@
-public class Vector2D implements IVector{
+public class Vector2D implements IVector {
 
     private double x;
     private double y;
