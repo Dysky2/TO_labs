@@ -1,4 +1,4 @@
-public class Polar2DAdapter extends  Vector2D implements IPolar2D, IVector{
+public class Polar2DAdapter implements IPolar2D, IVector{
     private Vector2D srcVector;
 
     public Polar2DAdapter(Vector2D srcVector) {

@@ -14,9 +14,9 @@ public class Vector3DInheritance extends Vector2D {
 
     @Override
     public double cdot(IVector param) {
-        double[] a = normalizeTo3D(this.getComponents());
-        double[] b = normalizeTo3D(param.getComponents());
-        return a[0] * b[0] + a[1] * b[1] + a[2] * b[2];
+        double[] a = getComponents();
+        double[] b = to3D(param.getComponents());
+        return a[0]*b[0] + a[1]*b[1] + a[2]*b[2];
     }
 
     @Override
@@ -26,25 +26,27 @@ public class Vector3DInheritance extends Vector2D {
     }
 
     public double[] cross(IVector param) {
-        double[] a = normalizeTo3D(this.getComponents());
-        double[] b = normalizeTo3D(param.getComponents());
-        double x = a[1] * b[2] - a[2] * b[1];
-        double y = a[2] * b[0] - a[0] * b[2];
-        double z = a[0] * b[1] - a[1] * b[0];
-        return new double[]{x, y, z};
+        double[] a = getComponents();
+        double[] b = to3D(param.getComponents());
+        double[][] m = {
+                {0,    -a[2],  a[1]},
+                {a[2],  0,    -a[0]},
+                {-a[1], a[0],  0   }
+        };
+        double[] r = new double[3];
+        for (int i = 0; i < 3; i++)
+            for (int j = 0; j < 3; j++)
+                r[i] += m[i][j] * b[j];
+        return r;
     }
 
-    private double[] normalizeTo3D(double[] components) {
-        if (components.length == 3) {
-            return components;
-        }
-
-        double[] normalized = new double[3];
-        System.arraycopy(components, 0, normalized, 0, Math.min(components.length, 2));
-        return normalized;
-    }
-
-    public IVector getSrv() {
+    public IVector getSrcV() {
         return this;
+    }
+
+    private static double[] to3D(double[] c) {
+        double[] r = new double[3];
+        System.arraycopy(c, 0, r, 0, Math.min(c.length, 3));
+        return r;
     }
 }

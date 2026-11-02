@@ -1,79 +1,58 @@
+import java.util.Arrays;
+import java.util.Locale;
+
 public class Main {
+
+    static double[] cross(IVector a, IVector b) {
+        if (a instanceof Vector3DDecorator d) return d.cross(b);
+        if (a instanceof Vector3DInheritance i) return i.cross(b);
+        return new Vector3DDecorator(a, 0).cross(b);
+    }
+
+    static String fmt(double[] v) {
+        return String.format(Locale.US, "(%.1f, %.1f, %.1f)",
+                v[0], v[1], v.length > 2 ? v[2] : 0.0);
+    }
+
     public static void main(String[] args) {
-        Vector2D base2D = new Vector2D(2, -3);
-        Vector3DDecorator v0 = new Vector3DDecorator(base2D, 0);
-        Vector3DInheritance v1 = new Vector3DInheritance(1, 2, 3);
-        Vector3DDecorator v2 = new Vector3DDecorator(new Vector2D(4, -1), 5);
-        Vector3DDecorator v3 = new Vector3DDecorator(new Polar2DAdapter(new Vector2D(-2, 3)), 1);
+        Locale.setDefault(Locale.US);
 
-        IVector[] vectors = {v0, v1, v2, v3};
+        IVector[] v = {
+                new Polar2DAdapter(new Vector2D(3, 4)),
+                new PolarInheritance2D(1, 2),
+                new Vector3DDecorator(new Vector2D(2, -1), 5)
+        };
+        String[] n = {"A", "B", "C"};
+        String[] desc = {"adapter 2D", "dziedziczenie 2D", "dekorator 3D"};
 
-        for (int i = 0; i < vectors.length; i++) {
-            printVector("v" + i, vectors[i]);
+        System.out.println("=== WSPOLRZEDNE ===");
+        System.out.printf("%-3s %-18s %-20s %-8s %-10s%n","", "typ", "kartezjanskie", "r", "phi [rad]");
+        for (int i = 0; i < v.length; i++) {
+            double[] c = v[i].getComponents();
+            System.out.printf("%-3s %-18s %-20s %-8.3f %-10.3f%n",
+                    n[i], desc[i], fmt(c), v[i].abs(), Math.atan2(c[1], c[0]));
         }
 
-        System.out.println("\nIloczyn skalarny oraz wektorowy dla wszystkich kombinacji:");
-        for (int i = 0; i < vectors.length; i++) {
-            for (int j = i + 1; j < vectors.length; j++) {
-                IVector a = vectors[i];
-                IVector b = vectors[j];
-
-                double dot = a.cdot(b);
-                double[] cross = crossVector(a, b);
-
-                System.out.printf("v%d . v%d = %.4f%n", i, j, dot);
-                System.out.printf("v%d x v%d = %s%n", i, j, formatComponents(cross));
-            }
-        }
-    }
-
-    private static void printVector(String name, IVector vector) {
-        double[] components = vector.getComponents();
-        double angle = components.length >= 2 ? Math.atan2(components[1], components[0]) : 0.0;
-        double radius = components.length >= 2 ? Math.hypot(components[0], components[1]) : Math.abs(components[0]);
-
-        System.out.println(name + ":");
-        System.out.println("  kartezjanski: " + formatComponents(components));
-        System.out.println("  biegunowy:    r = " + String.format("%.4f", radius)
-                + ", fi = " + String.format("%.4f", angle) + " rad");
-    }
-
-    private static double[] crossVector(IVector a, IVector b) {
-        if (a instanceof Vector3DDecorator) {
-            return ((Vector3DDecorator) a).cross(b);
-        }
-        if (a instanceof Vector3DInheritance) {
-            return ((Vector3DInheritance) a).cross(b);
+        System.out.println("\n=== ILOCZYN SKALARNY (a . b) ===");
+        System.out.printf("%-6s", "a \\ b");
+        for (String s : n) System.out.printf("%10s", s);
+        System.out.println();
+        for (int i = 0; i < v.length; i++) {
+            System.out.printf("%-6s", n[i]);
+            for (int j = 0; j < v.length; j++)
+                System.out.printf("%10.2f", v[i].cdot(v[j]));
+            System.out.println();
         }
 
-        double[] va = normalizeTo3D(a.getComponents());
-        double[] vb = normalizeTo3D(b.getComponents());
-        double x = va[1] * vb[2] - va[2] * vb[1];
-        double y = va[2] * vb[0] - va[0] * vb[2];
-        double z = va[0] * vb[1] - va[1] * vb[0];
-        return new double[]{x, y, z};
-    }
-
-    private static double[] normalizeTo3D(double[] components) {
-        if (components.length == 3) {
-            return components;
+        System.out.println("\n=== ILOCZYN WEKTOROWY (a x b) ===");
+        System.out.printf("%-6s", "a \\ b");
+        for (String s : n) System.out.printf("%-20s", s);
+        System.out.println();
+        for (int i = 0; i < v.length; i++) {
+            System.out.printf("%-6s", n[i]);
+            for (int j = 0; j < v.length; j++)
+                System.out.printf("%-20s", fmt(cross(v[i], v[j])));
+            System.out.println();
         }
-
-        double[] normalized = new double[3];
-        System.arraycopy(components, 0, normalized, 0, Math.min(components.length, 2));
-        return normalized;
-    }
-
-    private static String formatComponents(double[] components) {
-        StringBuilder builder = new StringBuilder();
-        builder.append("(");
-        for (int i = 0; i < components.length; i++) {
-            if (i > 0) {
-                builder.append(", ");
-            }
-            builder.append(String.format("%.4f", components[i]));
-        }
-        builder.append(")");
-        return builder.toString();
     }
 }

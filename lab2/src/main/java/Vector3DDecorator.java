@@ -15,30 +15,39 @@ public class Vector3DDecorator implements IVector {
 
     @Override
     public double cdot(IVector param) {
-        double[] a = this.getComponents();
-        double[] b = param.getComponents();
-        return a[0] * b[0] + a[1] * b[1] + a[2] * b[2];
+        double[] a = getComponents();
+        double[] b = to3D(param.getComponents());
+        return a[0]*b[0] + a[1]*b[1] + a[2]*b[2];
     }
 
     @Override
     public double[] getComponents() {
-        double[] components = srcVector.getComponents();
-        double[] newComponents = new double[components.length + 1];
-        System.arraycopy(components, 0, newComponents, 0, components.length);
-        newComponents[components.length] = this.z;
-        return newComponents;
+        double[] c = srcVector.getComponents();
+        return new double[]{c[0], c[1], z};
     }
 
     public double[] cross(IVector param) {
-        double[] a = this.getComponents();
-        double[] b = param.getComponents();
-        double x = a[1] * b[2] - a[2] * b[1];
-        double y = a[2] * b[0] - a[0] * b[2];
-        double z = a[0] * b[1] - a[1] * b[0];
-        return new double[]{x, y, z};
+        double[] a = getComponents();
+        double[] b = to3D(param.getComponents());
+        double[][] m = {
+                {0,    -a[2],  a[1]},
+                {a[2],  0,    -a[0]},
+                {-a[1], a[0],  0   }
+        };
+        double[] r = new double[3];
+        for (int i = 0; i < 3; i++)
+            for (int j = 0; j < 3; j++)
+                r[i] += m[i][j] * b[j];
+        return r;
     }
 
-    public IVector getSrv() {
+    public IVector getSrcV() {
         return srcVector;
+    }
+
+    private static double[] to3D(double[] c) {
+        double[] r = new double[3];
+        System.arraycopy(c, 0, r, 0, Math.min(c.length, 3));
+        return r;
     }
 }
