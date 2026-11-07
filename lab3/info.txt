@@ -1,0 +1,4 @@
+widok , losowac wekror kierunku i predkosci, losowanie kata i modułu i modyfikowac wektor
+
+noteTaker
+posiada zbior mementorow i pozwala dla każdego ustawić stan i wznowić do symulacji albo gotowac do
