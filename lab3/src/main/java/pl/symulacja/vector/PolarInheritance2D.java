@@ -1,4 +1,4 @@
-package vector;
+package pl.symulacja.vector;
 
 public class PolarInheritance2D extends Vector2D {
 

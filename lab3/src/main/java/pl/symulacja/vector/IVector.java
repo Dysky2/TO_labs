@@ -1,4 +1,4 @@
-package vector;
+package pl.symulacja.vector;
 
 public interface IVector {
     public double abs();

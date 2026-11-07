@@ -1,4 +1,4 @@
-package vector;
+package pl.symulacja.vector;
 
 public class Vector2D implements IVector {
 

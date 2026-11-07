@@ -1,6 +1,6 @@
-package entity;
+package pl.symulacja.entity;
 
-import vector.IVector;
+import pl.symulacja.vector.IVector;
 
 public class Entity implements Moveable{
 

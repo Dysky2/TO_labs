@@ -1,4 +1,4 @@
-package vector;
+package pl.symulacja.vector;
 
 public class Vector3DDecorator implements IVector {
     private IVector srcVector;

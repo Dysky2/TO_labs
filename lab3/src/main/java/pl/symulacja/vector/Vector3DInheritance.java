@@ -1,4 +1,4 @@
-package vector;
+package pl.symulacja.vector;
 
 public class Vector3DInheritance extends Vector2D {
     private double z;

@@ -1,7 +1,6 @@
-package entity;
+package pl.symulacja.entity;
 
-import vector.IVector;
-import vector.Vector2D;
+import pl.symulacja.vector.IVector;
 
 public interface Moveable {
     IVector move(IVector vector);

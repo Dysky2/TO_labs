@@ -1,4 +1,4 @@
-package entity;
+package pl.symulacja.entity;
 
 public class Human extends Entity {
     private String name;

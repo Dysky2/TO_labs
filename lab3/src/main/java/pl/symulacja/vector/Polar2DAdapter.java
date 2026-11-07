@@ -1,4 +1,4 @@
-package vector;
+package pl.symulacja.vector;
 
 public class Polar2DAdapter implements IPolar2D, IVector{
     private Vector2D srcVector;

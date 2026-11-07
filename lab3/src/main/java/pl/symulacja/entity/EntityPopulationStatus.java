@@ -1,4 +1,4 @@
-package entity;
+package pl.symulacja.entity;
 
 public enum EntityPopulationStatus {
     IMMUTABLE,
