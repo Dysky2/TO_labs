@@ -15,6 +15,28 @@ public class Vector2D implements IVector {
         this.y = 0;
     }
 
+    public double getX() {
+        return x;
+    }
+
+    public double getY() {
+        return y;
+    }
+
+    public Vector2D add(Vector2D other) {
+        return new Vector2D(this.x + other.x, this.y + other.y);
+    }
+
+    public Vector2D multiply(double scalar) {
+        return new Vector2D(this.x * scalar, this.y * scalar);
+    }
+
+    public double distanceTo(Vector2D other) {
+        double dx = this.x - other.x;
+        double dy = this.y - other.y;
+        return Math.sqrt(dx * dx + dy * dy);
+    }
+
     @Override
     public double[] getComponents() {
         return new double[]{this.x, this.y};
